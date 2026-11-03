@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CheapCart</title>
+<meta name="description" content="Type a shopping list and see which shop near you sells each item cheapest. Early, open source in progress, sample data only.">
+<style>
+  :root {
+    --bg: #fafaf6;
+    --card: #ffffff;
+    --text: #1d1f1c;
+    --muted: #5d625b;
+    --line: #dfe1d9;
+    --accent: #1f6b45;
+    --accent-text: #ffffff;
+    --warn-bg: #fdf1cf;
+    --warn-text: #5d4a05;
+    --code-bg: #eef0e8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141713;
+      --card: #1c201b;
+      --text: #ecefe8;
+      --muted: #a4aa9f;
+      --line: #2c322a;
+      --accent: #5cc08a;
+      --accent-text: #0e1a12;
+      --warn-bg: #3a3112;
+      --warn-text: #f1dc93;
+      --code-bg: #232921;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .notice { background: var(--warn-bg); color: var(--warn-text); text-align: center; padding: 10px 16px; font-size: 15px; }
+  header { padding: 48px 0 24px; }
+  h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.15; margin: 0 0 12px; }
+  h1 small { font-size: 0.45em; color: var(--muted); font-weight: 500; }
+  h2 { font-size: 1.5rem; margin: 48px 0 12px; }
+  p { margin: 0 0 14px; }
+  .lead { font-size: 1.2rem; color: var(--muted); max-width: 40em; }
+  a { color: var(--accent); }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-text); padding: 10px 18px; border-radius: 10px; text-decoration: none; font-weight: 600; margin-top: 8px; }
+  ul.points { padding-left: 1.2em; margin: 0 0 14px; }
+  ul.points li { margin-bottom: 6px; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 16px; }
+  figure { margin: 0; }
+  figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+  figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  pre { background: var(--code-bg); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-size: 15px; line-height: 1.5; margin: 0 0 14px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+  :not(pre) > code { background: var(--code-bg); padding: 1px 6px; border-radius: 5px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; margin-bottom: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tablewrap { overflow-x: auto; }
+  footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 24px 0 48px; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="notice">Early project. Everything you see here runs on made-up sample data. No real shop or price is in it.</div>
+
+<div class="wrap">
+<header>
+  <h1>CheapCart <small>(working name)</small></h1>
+  <p class="lead">Type your shopping list. For every item, see which shop near you sells it cheapest, what the whole list costs, and how that compares with going to just one shop.</p>
+  <a class="btn" href="#install">Quick install</a>
+</header>
+
+<main>
+<section>
+  <h2>What it does</h2>
+  <ul class="points">
+    <li>Matches each line on your list to an item and finds the cheapest fresh price within the distance you choose.</li>
+    <li>Compares per unit (per kg, per litre), inside a narrow size band, so a big pack doesn't win when you wanted a small one.</li>
+    <li>Shows how old every price is, and never uses a price past the freshness limit.</li>
+    <li>Tells you when an item has no price nearby, instead of hiding it.</li>
+    <li>Shows the best single shop next to the per-item answer, so you can decide if the extra stops are worth it.</li>
+    <li>Keeps your location out of URLs, logs and storage. No accounts, no tracking cookies.</li>
+  </ul>
+  <p>Prices are ranked by price per unit and nothing else. There is no paid placement and no scraping of any shop.</p>
+</section>
+
+<section>
+  <h2>What it looks like</h2>
+  <p>These are real screenshots of the running app, taken on a phone-sized screen. Every shop and price is marked "sample".</p>
+  <div class="shots">
+    <figure>
+      <img src="img/list-by-item.png" alt="The list screen with six items and the answer for each item, with the total and the best single shop" loading="lazy">
+      <figcaption>A list, the total, and the cheapest shop for each item.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/list-by-shop.png" alt="The same answer grouped by shop, with tick boxes to use while shopping" loading="lazy">
+      <figcaption>The same answer by shop, with tick boxes for use in the shop.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/send-prices.png" alt="The send prices screen showing a receipt read into lines that the user checks before sending" loading="lazy">
+      <figcaption>Sending in prices from a text receipt. You check every line first.</figcaption>
+    </figure>
+  </div>
+  <p style="margin-top:16px">There is no live demo on this page. The app needs a server for its API and its data files, so it can't run as a static site. Run it on your own machine with the steps below, it takes a couple of minutes.</p>
+</section>
+
+<section id="install">
+  <h2>Quick install</h2>
+  <p>You need Node.js 20.9 or newer.</p>
+<pre><code>git clone https://github.com/abozaralizadeh/CheapCart.git
+cd CheapCart
+npm install
+npm run dev</code></pre>
+  <p>Open <code>http://localhost:3000</code>, type <code>ST1</code> as the postcode, add a few items like milk, 2 eggs and bread, and press the button. The sample data is created the first time you run the app.</p>
+  <p>Run the tests:</p>
+<pre><code>npm test
+npm run typecheck</code></pre>
+  <p>On a Debian or Ubuntu server, <code>sudo ./setup_service.sh</code> installs everything, builds the app and runs it as a systemd service. It has not been tried on a real server yet.</p>
+</section>
+
+<section>
+  <h2>Where it stands</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Works now</th><td>List, compare, best single shop, results by item and by shop, price import with checks, sent-in prices with a review queue, reports, tests, a setup script, backups.</td></tr>
+    <tr><th>Faked</th><td>Prices (made up), receipt photo reading (text only), the database (CSV files).</td></tr>
+    <tr><th>Missing</th><td>Real price data, a real launch area, a tested server setup, accessibility testing with a screen reader.</td></tr>
+  </table>
+  </div>
+  <p>The roadmap and the design notes are in the repository under <code>docs/</code>.</p>
+</section>
+
+<section>
+  <h2>License</h2>
+  <p>To be decided.</p>
+</section>
+</main>
+
+<footer>CheapCart is a working name. Privacy and Terms pages in the app are drafts and are not legal advice.</footer>
+</div>
+
+</body>
+</html>

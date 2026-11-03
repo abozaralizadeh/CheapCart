@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "dev server", "type": "shell", "command": "npm run dev", "isBackground": true, "problemMatcher": [] },
+    { "label": "test", "type": "shell", "command": "npm test", "group": "test", "problemMatcher": [] },
+    { "label": "typecheck", "type": "shell", "command": "npm run typecheck", "problemMatcher": ["$tsc"] },
+    { "label": "regenerate sample data", "type": "shell", "command": "npm run sample:generate", "problemMatcher": [] },
+    { "label": "freshness report", "type": "shell", "command": "npm run report:freshness", "problemMatcher": [] }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "cheapcart",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tells you where to buy each item on your shopping list, close to you, so you pay less. Working name.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "sample:generate": "tsx scripts/generate-sample.ts",
+    "import:catalog": "tsx scripts/import-catalog.ts",
+    "import:prices": "tsx scripts/import-prices.ts",
+    "report:freshness": "tsx scripts/report-freshness.ts",
+    "report:unmatched": "tsx scripts/report-unmatched.ts",
+    "report:quality": "tsx scripts/report-quality.ts",
+    "review": "tsx scripts/review.ts",
+    "predev": "tsx scripts/ensure-sample.ts",
+    "prestart": "tsx scripts/ensure-sample.ts"
+  },
+  "dependencies": {
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

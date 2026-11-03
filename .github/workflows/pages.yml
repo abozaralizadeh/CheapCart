@@ -1,0 +1,32 @@
+# Deploys the static site in site/ to GitHub Pages.
+# Not active yet: it only runs by hand (workflow_dispatch), and Pages is not enabled in the repository settings.
+# To switch it on later: Settings, Pages, Source "GitHub Actions", then run this workflow
+# (or add a push trigger for site/** on main).
+name: Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
