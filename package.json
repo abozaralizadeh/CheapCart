@@ -2,6 +2,7 @@
   "name": "cheapcart",
   "version": "0.1.0",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "description": "Tells you where to buy each item on your shopping list, close to you, so you pay less. Working name.",
   "scripts": {

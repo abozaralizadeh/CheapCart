@@ -4,6 +4,10 @@ You type a shopping list. For every item, CheapCart tells you which shop near yo
 
 It is a small web app (Next.js and TypeScript) with no accounts and no tracking. Your location is used for one calculation and never stored.
 
+![A short screen recording of CheapCart: a postcode, four items, the cheapest shop for each one, then the same answer by shop](site/img/demo.gif)
+
+The recording is of the real app running on made-up sample data. More on the [project page](https://abozaralizadeh.github.io/CheapCart/).
+
 ## Status
 
 Early. It works end to end, but only on **made-up sample data**. There are no real shops or prices in it, every price on screen carries a "sample" tag, and a banner says the data is made up. Nothing here is a finished product you can point at a real town yet. The roadmap is in [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -88,8 +92,10 @@ The app writes JSON lines to `logs/app.log`, rotated at 1 MB and keeping 3 files
 
 ## Contributing
 
-Issues and pull requests are welcome once the repository is public. Please run `npm test` and `npm run typecheck` before you send a change, and add a test for new logic. Keep the rules in [docs/DESIGN.md](docs/DESIGN.md) in mind: rank by price per unit only, always show how old a price is, never hide an item that couldn't be priced, never store or log a location, and don't add anything that scrapes a shop's website or app.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), including the short note on the licence of contributions. Please run `npm test` and `npm run typecheck` before you send a change, and add a test for new logic. Keep the rules in [docs/DESIGN.md](docs/DESIGN.md) in mind: rank by price per unit only, always show how old a price is, never hide an item that couldn't be priced, never store or log a location, and don't add anything that scrapes a shop's website or app.
 
 ## License
 
-To be decided.
+Source available, free for non-commercial use, under the [PolyForm Noncommercial License 1.0.0](LICENSE). You can read it, run it, change it and share it for non-commercial purposes. Commercial use needs written permission: ask by opening a GitHub issue. This is not an open source licence, because open source licences allow commercial use.
+
+The docs in `docs/` and the images in `site/img` are under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). The npm packages the app uses are installed from npm and keep their own licences. Nothing from outside is bundled in this repository.

@@ -27,3 +27,10 @@ pgdata/
 postgres-data/
 *.pem
 *.key
+
+# demo recordings (the README GIF and site video are copied into site/img)
+demos/out/
+demos/auth/
+
+# written by next dev
+AGENTS.md

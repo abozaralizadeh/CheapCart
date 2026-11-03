@@ -1,0 +1,106 @@
+{
+  "name": "tour",
+  "url": "http://localhost:3100/",
+  "viewport": "desktop",
+  "steps": [
+    {
+      "caption": "Sample data only. Every shop and price is made up.",
+      "wait": 1200
+    },
+    {
+      "type": "ST1",
+      "into": {
+        "label": "Postcode"
+      }
+    },
+    {
+      "click": {
+        "role": "button",
+        "name": "Use postcode"
+      },
+      "after": 600
+    },
+    {
+      "caption": "Type the list the way you'd write it",
+      "type": "milk",
+      "into": "#item"
+    },
+    {
+      "press": "Enter"
+    },
+    {
+      "type": "2 eggs",
+      "into": "#item"
+    },
+    {
+      "press": "Enter"
+    },
+    {
+      "type": "bread",
+      "into": "#item"
+    },
+    {
+      "press": "Enter",
+      "after": 600
+    },
+    {
+      "caption": "The cheapest shop for each item",
+      "click": {
+        "role": "button",
+        "name": "Find the cheapest shops"
+      },
+      "mark": "result",
+      "after": 200
+    },
+    {
+      "waitFor": {
+        "text": "Your answer"
+      },
+      "cut": true,
+      "timeout": 60000
+    },
+    {
+      "expect": {
+        "text": "sample"
+      }
+    },
+    {
+      "caption": "The total, and the best single shop next to it",
+      "scroll": {
+        "role": "heading",
+        "name": "Your answer"
+      },
+      "after": 2200
+    },
+    {
+      "caption": "Every price shows how old it is",
+      "scroll": {
+        "text": "Price seen"
+      },
+      "after": 2200
+    },
+    {
+      "caption": "Or see it shop by shop, for use in the aisle",
+      "click": {
+        "role": "button",
+        "name": "By shop"
+      },
+      "after": 2400
+    }
+  ],
+  "exports": [
+    {
+      "file": "tour.mp4"
+    },
+    {
+      "file": "tour.gif",
+      "width": 800,
+      "fps": 10
+    }
+  ],
+  "hide": [
+    "nextjs-portal",
+    "[data-nextjs-toast]"
+  ],
+  "pace": 1.3
+}
