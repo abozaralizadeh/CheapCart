@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { withBase } from "../lib/basepath";
 import { parseLine } from "../lib/text";
 import type { CompareResult, LineResult, Offer } from "../lib/types";
 
@@ -46,7 +47,7 @@ function writeStore(data: unknown) {
 }
 
 async function post<T>(url: string, body: unknown): Promise<{ ok: boolean; status: number; data: T & { message?: string } }> {
-  const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  const res = await fetch(withBase(url), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
   return { ok: res.ok, status: res.status, data: await res.json() };
 }
 
@@ -68,7 +69,7 @@ export default function ListApp() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetch("/api/config")
+    fetch(withBase("/api/config"))
       .then((r) => r.json())
       .then((c: AppConfig) => {
         setCfg(c);
@@ -91,7 +92,7 @@ export default function ListApp() {
     const q = parseLine(v)?.name ?? "";
     if (q.length < 1) return setSuggestions([]);
     timer.current = setTimeout(() => {
-      fetch(`/api/items?q=${encodeURIComponent(q)}`)
+      fetch(withBase(`/api/items?q=${encodeURIComponent(q)}`))
         .then((r) => r.json())
         .then((d) => setSuggestions(d.suggestions ?? []))
         .catch(() => setSuggestions([]));

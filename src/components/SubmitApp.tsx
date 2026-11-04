@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withBase } from "../lib/basepath";
 
 interface ReadLine {
   text: string;
@@ -65,7 +66,7 @@ export default function SubmitApp() {
     setBusy(true);
     setError("");
     try {
-      const res = await fetch("/api/submissions/read", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text, areaId }) });
+      const res = await fetch(withBase("/api/submissions/read"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text, areaId }) });
       const d = await res.json();
       if (!res.ok) setError(d.message ?? "Could not read that.");
       else load(d);
@@ -83,7 +84,7 @@ export default function SubmitApp() {
       const form = new FormData();
       form.append("file", file);
       if (areaId) form.append("areaId", areaId);
-      const res = await fetch("/api/submissions/read", { method: "POST", body: form });
+      const res = await fetch(withBase("/api/submissions/read"), { method: "POST", body: form });
       const d = await res.json();
       if (!res.ok) setError(d.message ?? "Could not read that file.");
       else load(d);
@@ -101,7 +102,7 @@ export default function SubmitApp() {
       const lines = drafts
         .filter((d) => d.keep)
         .map((d) => ({ text: d.text, amountMinor: Math.round(parseFloat(d.price.replace(",", ".")) * 100), productId: d.productId || undefined }));
-      const res = await fetch("/api/submissions/confirm", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ shopId, date, lines }) });
+      const res = await fetch(withBase("/api/submissions/confirm"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ shopId, date, lines }) });
       const d = await res.json();
       if (!res.ok) setError(d.message ?? "Could not send.");
       else setOutcomes(d.outcomes);

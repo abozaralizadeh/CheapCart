@@ -16,6 +16,14 @@ export function resetRateLimits(): void {
   hits.clear();
 }
 
-export function clientKey(headers: Headers): string {
-  return headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";
+/**
+ * Who a request is from, for rate limits. x-forwarded-for is only believed when TRUST_PROXY is set
+ * (for example to 127.0.0.1 when nginx on the same machine sets it). Without it anyone could send a
+ * made-up header to dodge the limits, so every request shares one key.
+ */
+export function clientKey(headers: Headers, trustProxy = process.env.TRUST_PROXY ?? ""): string {
+  if (!trustProxy || trustProxy === "false" || trustProxy === "0") return "direct";
+  const hops = (headers.get("x-forwarded-for") ?? "").split(",").map((h) => h.trim()).filter(Boolean);
+  // The last hop is the one our own proxy added, so a client can't fake it.
+  return hops.at(-1) || "direct";
 }

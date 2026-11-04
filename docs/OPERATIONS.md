@@ -2,6 +2,31 @@
 
 How to look after CheapCart once it is on a VM. Everything here works on sample data today. Anything marked Proposed is a default the operator can change.
 
+## Two ways to install
+
+`setup_service.sh` has two modes. Run it again any time to pull, rebuild and restart.
+
+**On its own VM.** `sudo ./setup_service.sh` installs Node and the tools it needs with apt, builds, and runs the app on port 3000. Add `DOMAIN=cheapcart.example.com` to also get an nginx site for that domain. HTTPS isn't set up for you.
+
+**On a VM shared with other apps.** Set `NGINX_SNIPPET` and it switches to shared mode:
+
+```bash
+sudo SERVICE_NAME=cheapcart PORT=8604 BASE_PATH=/cheapcart/ \
+     NGINX_SNIPPET=/etc/nginx/snippets/cheapcart.conf ./setup_service.sh
+```
+
+In this mode it:
+
+- runs no apt-get and installs nothing. Node 20.9 or newer, npm, nginx, curl and tar must already be there, and it stops with a list if one is missing
+- listens on 127.0.0.1 only and sets `TRUST_PROXY=127.0.0.1`, so the rate limits use the address nginx passes on
+- writes only two nginx files: the snippet (a 301 from `/cheapcart` to `/cheapcart/`, then the proxy with a rate limit) and `/etc/nginx/conf.d/<service>-limits.conf` for the rate limit zone
+- runs `nginx -t`, and if that fails puts both files back as they were, so the other apps on the server keep working
+- keeps your `.env`, only setting `PORT`, `BASE_PATH` and `TRUST_PROXY` in it
+
+The nginx server block must include the snippet, for example `include /etc/nginx/snippets/cheapcart.conf;`, and nginx.conf must include `conf.d/*.conf`. Logs: `journalctl -u <service> -f`, and `logs/app.log` in the project folder is size limited.
+
+`BASE_PATH` is baked in when the app is built, and it's in `.env` so the build and the service both see it. Change it, then run the script again.
+
 ## Every week
 
 1. `npm run report:freshness`. It exits with an error when most prices are too old. A daily timer runs the same check.
@@ -49,4 +74,4 @@ The app holds no account and no location, so there is usually nothing to find. S
 
 ## Load
 
-`npx tsx scripts/loadtest.ts http://localhost:3100 10 20` sends compare requests from 20 virtual users for 10 seconds and prints the timings. Each virtual user has its own fake address, so the rate limiter allows about 60 requests per minute for each of them. Run it against your own copy, never someone else's site.
+`npx tsx scripts/loadtest.ts http://localhost:3100 10 20` sends compare requests from 20 virtual users for 10 seconds and prints the timings. Each virtual user has its own fake address. Start the app with `TRUST_PROXY=true` for the run, or every request shares one rate limit and most get a 429. Run it against your own copy, never someone else's site.

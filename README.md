@@ -36,7 +36,16 @@ npm run typecheck
 
 ## Run it on a server
 
-On a Debian or Ubuntu machine, `sudo ./setup_service.sh` installs what's needed, builds the app, creates a `cheapcart.service` systemd service plus a daily price check and a daily backup, and starts it. Run it again any time to update and restart. Logs: `journalctl -u cheapcart.service -f`. The script has only been syntax checked so far, not run on a real server, so expect to fix a rough edge or two. See [docs/OPERATIONS.md](docs/OPERATIONS.md).
+On a Debian or Ubuntu machine, `sudo ./setup_service.sh` installs what's needed, builds the app, creates a `cheapcart.service` systemd service plus a daily price check and a daily backup, and starts it. Run it again any time to update and restart. Logs: `journalctl -u cheapcart -f`.
+
+On a server that already runs other apps behind nginx, use the shared mode. It installs nothing, serves the app under a path and writes only one nginx location file and one rate limit file:
+
+```bash
+sudo SERVICE_NAME=cheapcart PORT=8604 BASE_PATH=/cheapcart/ \
+     NGINX_SNIPPET=/etc/nginx/snippets/cheapcart.conf ./setup_service.sh
+```
+
+Your nginx server block has to include that snippet. See [docs/OPERATIONS.md](docs/OPERATIONS.md) for both modes.
 
 ## What's in it
 

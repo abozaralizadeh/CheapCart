@@ -1,6 +1,7 @@
 // Local load test for POST /api/compare. Sample data only, run against your own copy.
 // Usage: npx tsx scripts/loadtest.ts [baseUrl] [seconds] [virtualUsers]
-// Each virtual user sends from its own x-forwarded-for, so the rate limiter does not block the run.
+// Each virtual user sends from its own x-forwarded-for. Start the app with TRUST_PROXY=true for this,
+// or every request shares one rate limit key and most of them get a 429.
 export {};
 
 const base = process.argv[2] ?? "http://localhost:3100";
